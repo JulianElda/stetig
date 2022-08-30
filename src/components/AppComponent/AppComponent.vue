@@ -7,7 +7,7 @@ const CURRENT_STATUS = ref<stati>(stati.WORK);
 </script>
 
 <template>
-  <h1>stetig</h1>
+  <h1 class="app-heading">stetig</h1>
   <div>
     <MainTimer
       v-if="CURRENT_STATUS === stati.WORK"
@@ -19,3 +19,10 @@ const CURRENT_STATUS = ref<stati>(stati.WORK);
       @stop="CURRENT_STATUS = stati.WORK" />
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.app-heading {
+  @apply font-mono text-2xl text-center
+    mt-1 mb-4;
+}
+</style>
