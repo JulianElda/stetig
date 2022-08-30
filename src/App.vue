@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import MainTimer from "@/components/MainTimer/MainTimer.vue";
+import AppComponent from "@/components/AppComponent/AppComponent.vue";
 </script>
 
 <template>
-  <h1>stetig</h1>
-  <MainTimer />
+  <AppComponent />
 </template>
-
-<style scoped>
-</style>
