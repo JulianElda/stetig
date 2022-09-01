@@ -1,4 +1,3 @@
-work_stati
 <script setup lang="ts">
 import { ref } from "vue";
 import MainTimer from "@/components/MainTimer/MainTimer.vue";
