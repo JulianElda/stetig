@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useFavicon } from "@vueuse/core";
 import TimerButton from "@/components/TimerButton/TimerButton.vue";
 import { formatTime } from "@/utils/functions";
 import {
@@ -31,7 +32,16 @@ const timerTemperature = ref<temperatures>(
   TIMER_STARTING_TEMPERATURE[props.status]
 );
 
+const favicon = computed(function () {
+  return "favicon-" + timerTemperature.value.toLowerCase() + ".ico";
+});
+
 let timerId: number;
+
+useFavicon(favicon, {
+  baseUrl: "/",
+  rel: "icon",
+});
 
 const findTemperatureFromScale = function (): temperatures {
   let ratio: number = timeLeft.value / STARTING_TIME;
@@ -48,9 +58,9 @@ const onStartTimer = function () {
   timerStatus.value = timer_stati.RUNNING;
   timerId = setInterval(function () {
     if (timeLeft.value > 0 && timerStatus.value === timer_stati.RUNNING) {
-      timeLeft.value -= UPDATE_INTERVAL;
+      timeLeft.value -= UPDATE_INTERVAL * 100;
       timerTemperature.value = findTemperatureFromScale();
-      emit("temp", timerTemperature.value);
+      useFavicon();
     }
   }, UPDATE_INTERVAL);
 };
