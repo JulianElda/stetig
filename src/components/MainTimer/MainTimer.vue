@@ -58,7 +58,7 @@ const timerTick = function () {
 
 const onStartTimer = function () {
   timerStatus.value = timer_stati.RUNNING;
-  timerId = setInterval(function () {
+  timerId = window.setInterval(function () {
     if (timeLeft.value > 0 && timerStatus.value === timer_stati.RUNNING) {
       timerTick();
     }
