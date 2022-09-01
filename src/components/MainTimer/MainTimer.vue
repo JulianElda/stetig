@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { useFavicon } from "@vueuse/core";
+import { ref } from "vue";
 import TimerButton from "@/components/TimerButton/TimerButton.vue";
 import { formatTime } from "@/utils/functions";
 import {
@@ -32,35 +31,36 @@ const timerTemperature = ref<temperatures>(
   TIMER_STARTING_TEMPERATURE[props.status]
 );
 
-const favicon = computed(function () {
-  return "favicon-" + timerTemperature.value.toLowerCase() + ".ico";
-});
-
 let timerId: number;
 
-useFavicon(favicon, {
-  baseUrl: "/",
-  rel: "icon",
-});
-
-const findTemperatureFromScale = function (): temperatures {
-  let ratio: number = timeLeft.value / STARTING_TIME;
-  let result: temperatures = TIMER_STARTING_TEMPERATURE[props.status];
+const findTemperatureFromScale = function (
+  time: number,
+  currentStatus: work_stati
+): temperatures {
+  let ratio: number = time / STARTING_TIME;
+  let result: temperatures = TIMER_STARTING_TEMPERATURE[currentStatus];
   for (const temperature in COLOR_THRESHOLD) {
     const threshold: number = COLOR_THRESHOLD[temperature as temperatures];
-    if (props.status === work_stati.BREAK) ratio = 1 - ratio;
+    if (currentStatus === work_stati.BREAK) ratio = 1 - ratio;
     if (ratio < threshold) result = temperature as temperatures;
   }
   return result;
+};
+
+const timerTick = function () {
+  timeLeft.value -= UPDATE_INTERVAL;
+  const newTemperature = findTemperatureFromScale(timeLeft.value, props.status);
+  if (newTemperature != timerTemperature.value) {
+    timerTemperature.value = newTemperature;
+    emit("temp", newTemperature);
+  }
 };
 
 const onStartTimer = function () {
   timerStatus.value = timer_stati.RUNNING;
   timerId = setInterval(function () {
     if (timeLeft.value > 0 && timerStatus.value === timer_stati.RUNNING) {
-      timeLeft.value -= UPDATE_INTERVAL * 100;
-      timerTemperature.value = findTemperatureFromScale();
-      useFavicon();
+      timerTick();
     }
   }, UPDATE_INTERVAL);
 };
@@ -96,7 +96,7 @@ const onStopTimer = function () {
 
 <style lang="postcss" scoped>
 .timer-temperature-border {
-  @apply border;
+  @apply border rounded;
 }
 .timer-container {
   @apply bg-white shadow rounded p-2 space-y-4;
