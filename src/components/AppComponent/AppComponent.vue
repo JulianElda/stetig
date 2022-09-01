@@ -23,7 +23,7 @@ const changeCurrentTemperature = function (newTemperature: temperatures) {
 };
 
 useFavicon(favicon, {
-  baseUrl: "/",
+  baseUrl: "/stetig/",
   rel: "icon",
 });
 </script>
