@@ -1,11 +1,11 @@
-export const formatTime = function (ms: number): string {
-  const totalSeconds: number = ms / 1000;
-  const minutes: number = Math.floor(totalSeconds / 60);
-  const seconds: number = totalSeconds % 60;
+import { temperatures, COLOR_TEMPERATURES } from "@/utils/consts";
 
-  const padNumber = function (amount: number): string {
-    return amount >= 10 ? "" + amount : "0" + amount;
-  };
-
-  return padNumber(minutes) + ":" + padNumber(seconds);
+export const generateStorybookDecorators = function () {
+  let result = "";
+  for (const temperature in temperatures) {
+    result += `<div class="p-4" style="background-color: ${
+      COLOR_TEMPERATURES[temperature as temperatures]
+    }"><story/></div>`;
+  }
+  return result;
 };

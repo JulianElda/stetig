@@ -30,25 +30,22 @@ export enum temperatures {
   COOLER = "COOLER",
   COOL = "COOL",
   WARM = "WARM",
-  WARMER = "WARMER",
   HOT = "HOT",
 }
 
 export const COLOR_TEMPERATURES: Record<temperatures, string> = {
-  [temperatures.COLD]: "#0009FF",
-  [temperatures.COOLER]: "#7FABFF",
-  [temperatures.COOL]: "#CCDDFF",
-  [temperatures.WARM]: "#FFEECC",
-  [temperatures.WARMER]: "#FFD37F",
-  [temperatures.HOT]: "#FF6000",
+  [temperatures.COLD]: "#0052A1",
+  [temperatures.COOLER]: "#0068C8",
+  [temperatures.COOL]: "#478acc",
+  [temperatures.WARM]: "#ED6A07",
+  [temperatures.HOT]: "#E65050",
 };
 
 export const COLOR_THRESHOLD: Record<temperatures, number> = {
   [temperatures.COLD]: 1,
-  [temperatures.COOLER]: 0.8,
+  [temperatures.COOLER]: 0.9,
   [temperatures.COOL]: 0.4,
-  [temperatures.WARM]: 0.3,
-  [temperatures.WARMER]: 0.2,
+  [temperatures.WARM]: 0.1,
   [temperatures.HOT]: 0.05,
 };
 

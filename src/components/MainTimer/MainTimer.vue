@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TimerButton from "@/components/TimerButton/TimerButton.vue";
-import { formatTime } from "@/utils/functions";
+import TimerHeader from "@/components/TimerHeader/TimerHeader.vue";
+import TimerTimeLabel from "@/components/TimerTimeLabel/TimerTimeLabel.vue";
 import {
-  COLOR_TEMPERATURES,
   COLOR_THRESHOLD,
   temperatures,
   TIMER_CONFIGURATIONS,
@@ -48,7 +48,7 @@ const findTemperatureFromScale = function (
 };
 
 const timerTick = function () {
-  timeLeft.value -= UPDATE_INTERVAL;
+  timeLeft.value -= UPDATE_INTERVAL * 100;
   const newTemperature = findTemperatureFromScale(timeLeft.value, props.status);
   if (newTemperature != timerTemperature.value) {
     timerTemperature.value = newTemperature;
@@ -74,38 +74,25 @@ const onStopTimer = function () {
 </script>
 
 <template>
-  <div
-    class="timer-temperature-border"
-    :style="{ borderColor: COLOR_TEMPERATURES[timerTemperature] }">
-    <div class="timer-container">
-      <label class="timer-title">{{ TIMER_TITLE }}</label>
-      <label class="timer-timeleft">{{ formatTime(timeLeft) }}</label>
-      <div class="timer-button-container">
-        <TimerButton
-          label="start"
-          v-if="timerStatus === timer_stati.INITIATED"
-          @click="onStartTimer" />
-        <TimerButton
-          label="stop"
-          v-else-if="timerStatus === timer_stati.RUNNING"
-          @click="onStopTimer" />
-      </div>
+  <div class="timer-container">
+    <TimerHeader :title="TIMER_TITLE" />
+    <TimerTimeLabel :time-left="timeLeft" />
+    <div class="timer-button-container">
+      <TimerButton
+        label="start"
+        v-if="timerStatus === timer_stati.INITIATED"
+        @click="onStartTimer" />
+      <TimerButton
+        label="stop"
+        v-else-if="timerStatus === timer_stati.RUNNING"
+        @click="onStopTimer" />
     </div>
   </div>
 </template>
 
 <style lang="postcss" scoped>
-.timer-temperature-border {
-  @apply border rounded;
-}
 .timer-container {
-  @apply bg-white shadow rounded p-2 space-y-4;
-}
-.timer-title {
-  @apply text-xl text-center block;
-}
-.timer-timeleft {
-  @apply text-4xl text-center font-semibold block;
+  @apply space-y-4;
 }
 .timer-button-container {
   @apply w-full;
