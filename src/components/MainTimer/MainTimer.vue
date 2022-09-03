@@ -48,7 +48,7 @@ const findTemperatureFromScale = function (
 };
 
 const timerTick = function () {
-  timeLeft.value -= UPDATE_INTERVAL * 100;
+  timeLeft.value -= UPDATE_INTERVAL;
   const newTemperature = findTemperatureFromScale(timeLeft.value, props.status);
   if (newTemperature != timerTemperature.value) {
     timerTemperature.value = newTemperature;
